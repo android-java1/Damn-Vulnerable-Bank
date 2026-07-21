@@ -25,40 +25,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Install Android SDK components
-      run: |
-        sdkmanager "platforms;android-29" "build-tools;29.0.3" "ndk;21.0.6113669"
-
-    - name: Download Gradle 6.1.1
-      run: |
-        curl -sL https://services.gradle.org/distributions/gradle-6.1.1-bin.zip -o /tmp/gradle.zip
-        unzip -o -q /tmp/gradle.zip -d /tmp
-
-    - name: Set up JDK 11 for Gradle build
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '11'
-
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: "java"
-        build-mode: manual
-
-    - name: Build
-      run: |
-        cd DamnVulnerableBank
-        /tmp/gradle-6.1.1/bin/gradle assemble --no-daemon || echo "Build failed, CodeQL will analyze source directly"
+        build-mode: none
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
