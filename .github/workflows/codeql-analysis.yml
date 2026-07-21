@@ -38,6 +38,11 @@ jobs:
       run: |
         sdkmanager "platforms;android-29" "build-tools;29.0.3" "ndk;21.0.6113669"
 
+    - name: Regenerate Gradle wrapper
+      run: |
+        cd DamnVulnerableBank
+        gradle wrapper --gradle-version 6.1.1
+
     - name: Set up JDK 11 for Gradle build
       uses: actions/setup-java@v4
       with:
@@ -56,7 +61,6 @@ jobs:
     - name: Build
       run: |
         cd DamnVulnerableBank
-        gradle wrapper --gradle-version 6.1.1
         chmod +x gradlew
         ./gradlew assemble --no-daemon
 
