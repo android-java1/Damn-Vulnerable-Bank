@@ -38,19 +38,19 @@ jobs:
       run: |
         sdkmanager "platforms;android-29" "build-tools;29.0.3" "ndk;21.0.6113669"
 
-    - name: Regenerate Gradle wrapper
+    - name: Download Gradle wrapper jar
       run: |
         cd DamnVulnerableBank
-        gradle wrapper --gradle-version 6.1.1
+        mkdir -p gradle/wrapper
+        curl -sL https://services.gradle.org/distributions/gradle-6.1.1-bin.zip -o /tmp/gradle.zip
+        unzip -o -q /tmp/gradle.zip -d /tmp
+        cp /tmp/gradle-6.1.1/lib/gradle-wrapper-*.jar gradle/wrapper/gradle-wrapper.jar
 
     - name: Set up JDK 11 for Gradle build
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '11'
-
-    - name: Set up Gradle
-      uses: gradle/actions/setup-gradle@v4
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
